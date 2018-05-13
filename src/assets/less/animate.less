@@ -1,0 +1,62 @@
+//淡入效果
+.fadeInUp{
+	-webkit-animation: fadeInUp 2s ease-out;
+	animation: fadeInUp 2s ease-out;
+}
+@-webkit-keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(-200px, 0, 0);
+    transform: translate3d(-200px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+     transform: none;
+   }
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(-200px, 0, 0);
+    transform: translate3d(-200px, 0, 0);
+    }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+.shake {
+  -webkit-animation: shake 1.5s alternate 2s ease-in-out both;
+  animation: shake 1.5s alternate 2s ease-in-out both;
+}
+@-webkit-keyframes shake {
+  0%, to {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+	10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+@keyframes shake {
+  0%, to {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
