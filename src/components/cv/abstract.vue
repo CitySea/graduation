@@ -13,7 +13,7 @@
 			<section class="abstract-cnter flex-2">
 				<section class="abstract-sample-text">
 					<h3>介绍</h3>
-					<section id="detail"></section>
+					<section v-html="cvInfo.detail"></section>
 				</section>
 			</section>
 		</section>
@@ -31,11 +31,9 @@
 			}
 		},
 		mounted () {
-			let vw = this;
-			let detail = document.getElementById('detail');
-			console.log(vw.cvInfo.detail);
-			console.log(vw.cvInfo.name);
-			detail.innerHTML = vw.cvInfo.detail;
+			// let vw = this;
+			// let detail = document.getElementById('detail');
+			// detail.innerHTML = vw.cvInfo.detail;
 		}
  	}
 </script>

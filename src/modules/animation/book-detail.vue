@@ -2,7 +2,7 @@
   <section id="app" class="animation-detail">
     <section class="contain">
       <Mheader></Mheader>
-      <Detailbar></Detailbar>
+      <Detailbar v-if="isShow" :data-info="dataInfo"></Detailbar>
       <section class="detail-bar-box">
         <section class="detail-bar">
           <ul class="flex">
@@ -10,10 +10,10 @@
           </ul>
         </section>
       </section>
-      <Abstract v-if="ide == 0"></Abstract>
-      <Characters  v-if="ide == 1"></Characters>
-      <Staff    v-if="ide == 2"></Staff>
-      <Journal  v-if="ide == 3"></Journal>
+      <Abstract v-if="ide == 0 && isShow" :data-info = "dataInfo"></Abstract>
+      <Characters v-if="ide == 1 && isShow" :data-info = "dataInfo"></Characters>
+      <Staff v-if="ide == 2 && isShow" :data-info = "dataInfo"></Staff>
+      <Journal v-if="ide == 3 && isShow" :data-info = "dataInfo"></Journal>
       <Mfooter></Mfooter>
     </section>  
   </section>
@@ -40,15 +40,30 @@
       Journal
     },
     created: function(){
+      let vw = this;
+      let index = window.location.href.indexOf('id=');
+      let id    = window.location.href.substring(index+3);
 
+      vw.$http.post('/api/manage/bookManage/showBaseInfo', {id: id}, {}).then(function(res){
+        vw.dataInfo = res.data.data;
+        vw.isShow   = true;
+      });
+      vw.setHot(id);
     },
     data: function(){
       return{
        ide: 0,
-       barArray: ['概览', '角色', '制作人员', '日志'],
+       barArray: ['概览', '角色', '单行本', '日志'],
+       isShow: false,
+       dataInfo: {}
       }
     },
     methods: {
+      setHot: function(id){
+        let vw = this;
+
+        vw.$http.post('/api/manage/bookManage/setHot', {id: id}, {}).then(function(res){});
+      }
     },
     mounted(){
       

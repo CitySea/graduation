@@ -26,7 +26,7 @@ router.post('/cvInfo', (req, res) => {
   let params = req.body;
 
   conn.query(query, [params.id], function(err, result) {
-    if( !err ) {
+    if( !err && result.length !== 0) {
       let date = new Date(result[0].date);
       result[0].date = date.getFullYear() + '-' + (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '-' + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
       jsonWrite(res, {code: '11000', msg:'查询成功',  data: result});
@@ -40,7 +40,7 @@ router.post('/staffInfo', (req, res) => {
   let params = req.body;
 
   conn.query(query, [params.id], function(err, result) {
-    if( !err ) {
+    if( !err && result.length !== 0) {
       let date = new Date(result[0].date);
       result[0].date = date.getFullYear() + '-' + (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '-' + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
       jsonWrite(res, {code: '11000', msg:'查询成功',  data: result});
@@ -110,13 +110,29 @@ router.get('/showStaff', (req, res) => {
   });
 });
 
+//返回所有staff姓名结果集
+router.post('/staffInfoArray', (req, res) => {
+  let query = $sql.staff.queryStaffname;
+  let params = req.body;
+
+  conn.query(query, [params.name, params.name], function(err, result) {
+    if( !err ) {
+      // let date = new Date(result[0].date);
+      // result[0].date = date.getFullYear() + '-' + (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '-' + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+      jsonWrite(res, {code: '11000', msg:'查询成功',  data: result});
+    }else{
+      console.log(err);
+    }
+  });
+});
+
 //添加人物情报
 router.post('/addStaff', (req, res) => {
   let sqlQuery;
   let sqlAdd;
   let params = req.body;
 
-  sqlAdd   = (params.cv_job === '0' ? $sql.cv.addCv : $sql.staff.addStaff);
+  sqlAdd = (params.cv_job === '0' ? $sql.cv.addCv : $sql.staff.addStaff);
   if(params.cv_job === '0'){
     //声优
     params.date = new Date(params.date).getTime();

@@ -6,7 +6,7 @@
       <li v-if="showLast"><a @click="addIde()">下一页</a></li>
     </ul>
     <div class="flex-1">
-      <p>共{{ totalData }}页，跳转至<input type="" name="">页<button>确定</button></p>
+      <p>共{{ totalData }}页，跳转至<input type="" name="" v-model="jumpIde">页<button @click="jumpPage()">确定</button></p>
     </div>
   </section>
 </template>
@@ -15,7 +15,7 @@
   export default{
     props: {
       pageIde: {
-        type: [Number],
+        type: [Number, String],
         default: 1
       },
       pageTotal: {
@@ -26,7 +26,8 @@
     data: function(){
       return{
         totalData: 20,
-        ide: 0
+        ide: 0,
+        jumpIde: '',
       }
     },
     created: function() {
@@ -55,6 +56,14 @@
         vw.ide--;
 
         //传递给父组件
+        this.$emit('now-ide', vw.ide);
+      },
+      //跳转页数
+      jumpPage: function(){
+        var vw = this;
+
+        vw.ide = vw.jumpIde
+        console.log(vw.ide);
         this.$emit('now-ide', vw.ide);
       }
     },
@@ -98,6 +107,19 @@
       showLast: function() {
         var vw = this;
         return vw.ide == vw.totalData ? false : true;
+      }
+    },
+    watch: {
+      'jumpIde': function(){
+        var vw = this;
+        if(vw.jumpIde != ''){
+          if(vw.jumpIde <= 0){
+            vw.jumpIde = 1;
+          }
+          if(vw.jumpIde > vw.pageTotal){
+            vw.jumpIde = vw.pageTotal;
+          }
+        }
       }
     }
   }

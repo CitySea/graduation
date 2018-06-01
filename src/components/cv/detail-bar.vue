@@ -11,7 +11,8 @@
 					</section>
 					<section class="header-detail">
 						<h1>{{ cvInfo.name }}（ {{ cvInfo.cnname }} ）</h1>
-						<p>职业: 声优 音乐人</p>
+						<p v-if="cvInfo.status == 'cv'">职业: 声优 音乐人</p>
+            <p v-if="cvInfo.status == 'staff'">职业: {{ cvInfo.job }}</p>
 					</section>
 				</section>
 <!-- 				<section class="right">
@@ -41,7 +42,6 @@
     },
     data: function(){
       return{
-      	
     		scoreArray: [
     			{score: '10', rate: '50%', title: '100人评分'},
     			{score: '9',  rate: '20%', title: '90人评分'},

@@ -3,9 +3,9 @@
 		<section class="animation-seclist">
 			<section class="seclist-box">
 				<ul>
-					<li class="flex" v-for="item in sectionArray">
-						<p class="flex-1">第一话：{{ item.tile }} / {{ item.ctitle }}</p>
-						<p class="flex-1">时长：{{ item.time }} / 首播：{{ item.time }}</p>
+					<li class="flex" v-for="item in episodeInfo">
+						<p class="flex-1">第{{ item.epi_no }}话：{{ item.name }} / {{ item.cnname }}</p>
+						<p class="flex-1">时长：{{ item.duration }} / 首播：{{ item.broadcast_time }}</p>
 					</li>
 				</ul>
 			</section>
@@ -15,29 +15,16 @@
 
 <script>
 	export default {
+    props: ['dataInfo'],
 		data: function() {
 			return{
-				sectionArray: [
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'},
-					{tile: ' 虎と竜', ctitle: '龙与虎', bo: '2008-10-01', time: '00:24:54'}
-				],
-				itemToal: [
-          { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题1111111'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题'}
-        ],
+        episodeInfo: []
 			}
-		}
+		},
+    created: function(){
+      var vw = this;
+
+      vw.episodeInfo =  vw.dataInfo.episode;
+    }
 	}
 </script>

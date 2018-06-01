@@ -13,21 +13,60 @@
       </section>
       <section class="home-wrapper">
         <section class="left max-width">
-          <section class="list" v-for="(items,index) in itemToal">
+          <section class="list">
             <section class="flex list-bar">
-              <h1>{{ sort[index] }}</h1>
+              <h1>{{ sort[0] }}</h1>
               <div class="bar">
-                <a class="refresh-btn"><i class="iconfont icon-refresh"></i><span>刷新</span></a>
-                <a class="more-btn"><span>查看更多</span></a>
+                <a class="refresh-btn" @click="getHotBangumi()"><i class="iconfont icon-refresh"></i><span>刷新</span></a>
+                <router-link class="more-btn" to="/animate"><span>查看更多</span></router-link>
               </div>
             </section>
             <ul>
-              <li v-for="item in items">
+              <li v-for="(item,i) in hotBanInfo" v-if="hotBanInfo">
+                <router-link :to="'/animate/detail?id=' + item.bangumiId">
                   <div class="img-box">
-                    <img :src="item.imgSrc">
-                    <p class="title">{{ item.title }}</p>
+                    <img :src="item.bangumiImg">
+                    <p class="title">{{ item.name }}</p>
                   </div>
-                  <p class="count"><i class="iconfont icon-heat"></i><span>{{ item.num }}</span></p>
+                  <p class="count"><i class="iconfont icon-heat"></i><span>{{ item.hotNum }}</span></p>
+                </router-link>
+              </li>
+            </ul>
+          </section>
+          <section class="list">
+            <section class="flex list-bar">
+              <h1>{{ sort[1] }}</h1>
+              <div class="bar">
+                <a class="refresh-btn" @click="getHotBook()"><i class="iconfont icon-refresh"></i><span>刷新</span></a>
+                <router-link class="more-btn" to="/book"><span>查看更多</span></router-link>
+              </div>
+            </section>
+            <ul>
+              <li v-for="(item,i) in hotBookInfo" v-if="hotBookInfo.length != 0">
+                <router-link :to="'/book/detail?id=' + item.bookId">
+                  <div class="img-box">
+                    <img :src="item.bookImg">
+                    <p class="title">{{ item.name }}</p>
+                  </div>
+                  <p class="count"><i class="iconfont icon-heat"></i><span>{{ item.hotNum }}</span></p>
+                </router-link>
+              </li>
+            </ul>
+          </section>
+          <section class="list">
+            <section class="flex list-bar">
+              <h1>{{ sort[2] }}</h1>
+              <div class="bar">
+                <a class="refresh-btn" @click="getRandomCv()"><i class="iconfont icon-refresh"></i><span>随便看看</span></a>
+                <router-link to="/cv" class="more-btn"><span>查看更多</span></router-link>
+              </div>
+            </section>
+            <ul>
+              <li v-for="(item,i) in hotCvInfo">
+                  <div class="img-box">
+                    <img :src="item.small_show_pic">
+                    <p class="title">{{ item.name }}</p>
+                  </div>
               </li>
             </ul>
           </section>
@@ -39,27 +78,13 @@
           <section class="dynamic-more">
             <p class="title">刚刚...</p>
             <ul>
-              <li class="dynamic-list flex" v-for="item in timeText">
+              <li class="dynamic-list flex" v-for="item in eventInfo">
                 <div class="img-box">
-                  <img :src="item.imgSrc" class="header">
+                  <img :src="item.profile" class="header">
                 </div>
-                <p class="text">{{ item.username }}看过{{ item.contain }}</p>
+                <p class="text">{{ item.userName }}{{ eventType[item.eventType] }}<router-link :to="eventUrl[item.type][item.eventType] + item.keyId"><span class="tag-name">{{ item.eventContent }}</span></router-link></p>
               </li>
             </ul>
-          </section>
-          <section class="delivery">
-            <p class="title">每日放送...</p>
-            <section class="calendar-mini">
-              <ul>
-                <li class="calendar-list" v-for="(items,index) in calendarText">
-                  <h3>{{ week[index] }}</h3>
-                  <div class="calendar-item">
-                    <a href="/" class="calendar-img" v-for="item in items"><div class="img-box"><img :src="item.imgSrc"></div></a>
-                  </div>
-                </li>
-              </ul>
-            </section>
-            <p class="count">今日上映 14 部。共 5464 人收看今日番组。</p>
           </section>
         </section>
       </section>
@@ -78,32 +103,23 @@
       Mfooter
     },
 	  created: function(){
-	  	
+	  	let vw = this;
+
+      vw.getHotBook();
+      vw.getHotBangumi();
+      vw.getRandomCv();
+      vw.getEvent();
 	  },
 	  data: function(){
 	  	return{
-        itemToal: [
-          [
-            { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题' , num: '2653'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题' , num: '1351'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题' , num: '1300'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题' , num: '985'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '动画标题' , num: '520'}
-          ],
-          [
-            { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '2653'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1351'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1300'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '985'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '520'}
-          ],
-          [
-            { imgSrc: '/static/images/animation/2.jpg' , title: '声优标题' , num: '2653'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '声优标题' , num: '1351'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '声优标题' , num: '1300'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '声优标题' , num: '985'},
-            { imgSrc: '/static/images/animation/2.jpg' , title: '声优标题' , num: '520'}
-          ],
+        hotBookInfo: [],
+        hotCvInfo:   [],
+        hotBanInfo: [],
+        eventInfo: [],
+        eventType: ['收藏了','发表了日志'],
+        eventUrl: [
+          ['/animate/detail?id=', '/journal/detail?banId='], 
+          ['/book/detail?id=', '/journal/detail?bookId=']
         ],
         sort: ['动画', '书籍', '声优'],
         week: ['今天', '明天'],
@@ -112,38 +128,55 @@
           { imgSrc: '/static/images/animation/1.jpg' , username: '呆唯' , contain: 'k-on！轻音少女'},
           { imgSrc: '/static/images/animation/1.jpg' , username: '呆唯' , contain: 'k-on！轻音少女'},
           { imgSrc: '/static/images/animation/1.jpg' , username: '呆唯' , contain: 'k-on！轻音少女'},
+          { imgSrc: '/static/images/animation/1.jpg' , username: '呆唯' , contain: 'k-on！轻音少女凑数字111111挤下去再加下fdsf'},
+          { imgSrc: '/static/images/animation/1.jpg' , username: '呆唯' , contain: 'k-on！轻音少女凑数字111111挤下去再加下fdsf'},
+          { imgSrc: '/static/images/animation/1.jpg' , username: '呆唯' , contain: 'k-on！轻音少女凑数字111111挤下去再加下fdsf'},
           { imgSrc: '/static/images/animation/1.jpg' , username: '呆唯' , contain: 'k-on！轻音少女凑数字111111挤下去再加下fdsf'}
         ],
-        calendarText: [
-          [
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'}
-          ],
-          [
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'}
-          ]
-        ]
       }
 	  },
 	  mounted(){
 	  	
-	  }
+	  },
+    methods: {
+      getHotBook:function(){
+        let vw = this;
+
+        vw.$http.post("/api/user/getHotBook", {}, {}).then(function(data){
+          if(data.data.code == "11000"){
+            vw.hotBookInfo = data.data.data;
+            console
+          }
+        });
+      },
+
+      getHotBangumi: function(){
+        let vw = this;
+
+        vw.$http.post("/api/user/getHotBangumi", {}, {}).then(function(data){
+          if(data.data.code == "11000"){
+            vw.hotBanInfo = data.data.data;
+          }
+        });
+      },
+      getRandomCv: function(){
+        let vw = this;
+
+        vw.$http.post("/api/user/getRandomCv", {}, {}).then(function(data){
+          if(data.data.code = "11000"){
+            vw.hotCvInfo = data.data.data;
+          }
+        });
+      },
+      getEvent: function(){
+        let vw = this;
+
+        vw.$http.post("/api/user/getEvent", {}, {}).then(function(data){
+          if(data.data.code == "11000"){
+            vw.eventInfo = data.data.data;
+          }
+        });
+      }
+    }
 	}
 </script>

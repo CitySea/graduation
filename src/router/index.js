@@ -65,6 +65,36 @@ const routerObj = new Router({
       path: '/blog',
       name: 'blog',
       component: resolve => require(['@/modules/animation/blog'], resolve),
+    },
+    //个人中心页面
+    {
+      path: '/user/center',
+      name: 'center',
+      component: resolve => require(['@/modules/user/personal'], resolve),
+    },
+    //日志首页
+    {
+      path: '/journal',
+      name: 'journal',
+      component: resolve => require(['@/modules/animation/daily-index'], resolve),
+    },
+    //日志详情页
+    {
+      path: '/journal/detail',
+      name: 'journal-detail',
+      component: resolve => require(['@/modules/animation/daily-detail'], resolve),
+    },
+    //编写日志页
+    {
+      path: '/journal/add',
+      name: 'add',
+      component: resolve => require(['@/modules/animation/daily-record'], resolve),
+    },
+    //搜索结果页
+    {
+      path: '/search',
+      name: 'search',
+      component: resolve => require(['@/modules/animation/search'], resolve),
     }
   ]
 });

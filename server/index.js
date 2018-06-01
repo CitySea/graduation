@@ -5,6 +5,7 @@ const userApi = require('./api/userApi');
 const uploadImage = require('./api/upload');
 const staffApi = require('./api/manage/chaInfor');
 const roleApi = require('./api/manage/role');
+const bookApi = require('./api/manage/book');
 const bangumiApi = require('./api/manage/bangumi');
 const showCvApi = require('./api/show/cvManage');
 const fs = require('fs');
@@ -53,6 +54,7 @@ app.use('/api/user', userApi);
 app.use('/api/upload', uploadImage);
 app.use('/api/manage/staff', staffApi);
 app.use('/api/manage/roleManage', roleApi);
+app.use('/api/manage/bookManage', bookApi);
 app.use('/api/manage/bgmiManage', bangumiApi);
 app.use('/api/show/cvManage', showCvApi);
 

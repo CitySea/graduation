@@ -16,15 +16,17 @@
           <section class="list">
             <ul>
               <li v-for="item in itemToal" class="bottom">
+                <a :href="'#/book/detail?id=' + item.id">
                   <div class="img-box">
-                    <img :src="item.imgSrc">
-                    <p class="title"><i class="iconfont icon-attention"></i><span>{{ item.num }}</span></p>
+                    <img :src="item.small_show_pic">
+                    <p class="title"><i class="iconfont icon-attention"></i><span>{{ item.stars }}</span></p>
                   </div>
-                  <p class="count">{{ item.title }}</p>
+                  <p class="count">{{ item.name }}</p>
+                </a>
               </li>
             </ul>
           </section>
-          <Pagination :page-ide="ide"></Pagination>
+          <Pagination :page-ide="ide" :page-total="pagetotal" @now-ide="getIde" v-if="showPage"></Pagination>
         </section>
         <section class="left side-right-bar">
           <section class="tile">
@@ -33,31 +35,31 @@
           <section class="type-box">
             <p class="title">类型</p>
             <ul class="flex">
-              <li class="type-list flex-1" v-for="item in typeArray">
-                <a class="text">{{ item }}</a>
+              <li class="type-list flex-1" v-for="(item,i) in typeArray">
+                <a class="text" :class="{'tag-name': i == typeIdx}" @click="typeIdx = i">{{ item }}</a>
               </li>
             </ul>
           </section>
           <section class="type-box">
             <p class="title">地区</p>
             <ul class="flex">
-              <li class="type-list flex-1" v-for="item in areaArray">
-                <a class="text">{{ item }}</a>
+              <li class="type-list flex-1" v-for="(item,i) in areaArray">
+                <a class="text" :class="{'tag-name': i == areaIdx}" @click="areaIdx = i">{{ item }}</a>
               </li>
             </ul>
           </section>
           <section class="type-box time-box">
             <p class="title">时间</p>
             <ul class="time-height" :class="{'show-time-height': isShowTime}">
-              <li class="type-list" v-for="item in timeArray">
-                <a class="text">{{ item }}</a>
+              <li class="type-list" v-for="(item,i) in timeArray">
+                <a class="text" :class="{'tag-name': i == timeIdx}"  @click="timeIdx = i">{{ item }}</a>
               </li>
               <li class="type-list">
                 <a class="text last" @click="showTimeList(testTime)">{{ testTime }}</a>
               </li>
             </ul>
           </section>
-          <section class="type-box time-box">
+<!--           <section class="type-box time-box">
             <p class="title">标签</p>
             <ul class="tag-height" :class="{'show-tag-height': isShowTag}">
               <li class="type-list" v-for="item in tagArray">
@@ -65,6 +67,17 @@
               </li>
               <li class="type-list">
                 <a class="text last" @click="showTagList(testTag)">{{ testTag }}</a>
+              </li>
+            </ul>
+          </section> -->
+          <section class="type-box time-box">
+            <p class="title">标签</p>
+            <ul class="tag-height" :class="{'show-tag-height': isShowTag}">
+              <li class="type-list" v-for="(item,i) in tagArray">
+                <a class="text" :class="{'tag-name': item.id == tagsIdx}"  @click="tagsIdx = item.id">{{ item.name }}</a>
+              </li>
+              <li class="type-list">
+                <a class="text last" @click="showTagList(testTag)" v-if="isShowMoreTag">{{ testTag }}</a>
               </li>
             </ul>
           </section>
@@ -87,81 +100,74 @@
       Pagination
     },
     created: function(){
-      
+      let vw = this;
+
+      vw.getBookInfo();
+      vw.getTagInfo();
     },
     data: function(){
       return{
-        ide: 2,
+        ide: 1,
+        pagetotal: 1,
         testTime: "+展开",
         testTag: "+展开",
-        itemToal: [
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '2653'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1351'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1300'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '985'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '520'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '2653'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1351'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1300'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '985'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '520'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '2653'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1351'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1300'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '985'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '520'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '2653'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1351'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1300'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '985'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '520'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '2653'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1351'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '1300'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '985'},
-          { imgSrc: '/static/images/animation/2.jpg' , title: '书籍标题' , num: '520'}
-        ],
+        itemToal: [],
         sort: ['动画', '书籍', '声优'],
         week: ['今天', '明天'],
         typeArray: ['全部', '漫画', '小说', '画集', '其他'],
-        areaArray: ['全部', '日本', '中国', '美国', '其他'],
+        areaArray: ['全部', '中国', '日本', '美国', '其他'],
         timetempA: [],
         tagtempA: [],
-        timeArray: ['2018', '2017', '2016', '2015', '2014', '2013', '2012'],
-        timetArray: ['2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000'],
-        tagArray: ['全部', '清改', '萌系', '搞笑', '热血', '催泪', '后宫', '机战', '恋爱', '百合', '推理'],
-        tagtArray: ['全部', '清改', '萌系', '搞笑', '热血', '催泪', '后宫', '机战', '恋爱', '百合', '推理', '时泪', '基腐', '悬疑', '励志', '日常', '职场', '魔法', '泡面', '社团', '音乐', '校园'],
-        calendarText: [
-          [
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'}
-          ],
-          [
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'}
-          ]
-        ],
+        timeArray: ['全部', '2018', '2017', '2016', '2015', '2014', '2013', '2012'],
+        timetArray: ['全部', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000'],
+        tagArray: [],
+        tagtArray: [],
+        typeIdx: 0,
+        areaIdx: 0,
+        timeIdx: 0,
+        tagsIdx: 0,
         isShowTime: false,
-        isShowTag: false
+        isShowTag: false,
+        isShowMoreTag: false,
+        showPage: false,
       }
     },
     methods: {
+      //获取总书籍数据
+      getBookInfo: function() {
+        let vw = this;
+        let limit = 5;
+        
+        vw.showPage  = false;
+        vw.$http.get('/api/manage/bookManage/showBook?limit=' + limit + '&page=' + vw.ide + '&areaIdx=' + vw.areaIdx + '&timeIdx=' + vw.timeIdx + '&typeIdx=' + vw.typeIdx + '&tagsIdx=' + vw.tagsIdx,{}).then(function(res){
+          vw.pagetotal = parseInt(res.data.count / limit) + 1; //总页数
+          vw.itemToal  = res.data.data; 
+          vw.showPage  = true;
+        });
+      },
+      //获取标签
+      getTagInfo: function() {
+        let vw = this;
+
+        vw.$http.get('/api/manage/bookManage/showTag', {}, {}).then(function(res){
+
+          vw.tagtArray = res.data.data;
+          vw.tagtArray.unshift({id: 0, name: '全部'});
+          if(vw.tagtArray.length <= 11){
+            vw.tagArray = vw.tagtArray;
+          }else{
+            vw.tagArray = vw.tagtArray.slice(0, 11);
+            vw.isShowMoreTag = true;
+          }
+        })
+      },
+      //页数
+      getIde: function(ide) {
+        let vw = this;
+
+        vw.ide = ide;
+        vw.getBookInfo();
+      },
       showTimeList: function (index) {
         var vw = this;
 
@@ -197,6 +203,28 @@
     },
     mounted(){
       
+    },
+    watch: {
+      areaIdx: function(){
+        let vw = this;
+
+        vw.getBookInfo();
+      },
+      timeIdx: function(){
+        let vw = this;
+
+        vw.getBookInfo();
+      },
+      typeIdx: function(){
+        let vw = this;
+
+        vw.getBookInfo();
+      },
+      tagsIdx: function(){
+        let vw = this;
+
+        vw.getBookInfo();
+      }
     }
   }
 </script>

@@ -111,7 +111,7 @@
       }
     },
     watch: {
-     'params.userName': function () {
+      'params.userName': function () {
         this.validate('userName');
       },
       'params.userPwd': function () {

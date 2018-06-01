@@ -30,13 +30,16 @@
         </section>
         <section class="left side-right-bar">
           <section class="tile">
-            <p>声优情报</p>
+            <p>人物情报</p>
           </section>
-          <section class="type-box">
-            <p class="title">地区</p>
+           <section class="type-box">
+            <p class="title">类型</p>
             <ul class="flex">
-              <li class="type-list flex-1" v-for="item in areaArray">
-                <a class="text">{{ item }}</a>
+              <li class="type-list flex-1">
+                <a class="text" @click="getCvInfo()" :class="{'tag-name': idx == 0}">声优</a>
+              </li>
+               <li class="type-list flex-1">
+                <a class="text" @click="getStaffInfo()" :class="{'tag-name': idx == 1}">制作人员</a>
               </li>
             </ul>
           </section>
@@ -63,48 +66,14 @@
         ide: 1,
         pagetotal: 8,
         showPage: false,
-        detailHref: '/#/cv/detail?id=',
+        detailHref: '',
         testTime: "+展开",
         testTag: "+展开",
         itemToal: [],
-        sort: ['动画', '书籍', '声优'],
-        week: ['今天', '明天'],
-        typeArray: ['全部', '漫画', '小说', '画集', '其他'],
         areaArray: ['全部', '日本', '中国', '美国', '其他'],
-        timetempA: [],
-        tagtempA: [],
-        timeArray: ['2018', '2017', '2016', '2015', '2014', '2013', '2012'],
-        timetArray: ['2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000'],
-        tagArray: ['全部', '清改', '萌系', '搞笑', '热血', '催泪', '后宫', '机战', '恋爱', '百合', '推理'],
-        tagtArray: ['全部', '清改', '萌系', '搞笑', '热血', '催泪', '后宫', '机战', '恋爱', '百合', '推理', '时泪', '基腐', '悬疑', '励志', '日常', '职场', '魔法', '泡面', '社团', '音乐', '校园'],
-        calendarText: [
-          [
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'},
-            {imgSrc: '/static/images/animation/4.jpg'}
-          ],
-          [
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'},
-            {imgSrc: '/static/images/animation/5.jpg'}
-          ]
-        ],
         isShowTime: false,
-        isShowTag: false
+        isShowTag: false,
+        idx: 0,
       }
     },
     created: function(){
@@ -157,11 +126,29 @@
           page: vw.ide,
           limit: 10
         }
+
+        vw.idx = 0;
+        vw.detailHref = '/#/cv/detail?id=';
         vw.$http.post('/api/show/cvManage/showCv', params, {}).then(function(res){
-          vw.pagetotal = parseInt(res.data.count / 10) + 1; //总页数
+          vw.pagetotal = parseInt(res.data.count / params.limit) + 1; //总页数
           vw.itemToal  = res.data.data; 
           vw.showPage  = true;
 
+        })
+      },
+      getStaffInfo: function() {
+        let vw = this;
+        let params = {
+          page: vw.ide,
+          limit: 10
+        }
+
+        vw.idx = 1;
+        vw.detailHref = '/#/cv/detail?staffId=';
+        vw.$http.post('/api/show/cvManage/showStaff', params, {}).then(function(res){
+          vw.pagetotal = parseInt(res.data.count / params.limit) + 1; //总页数
+          vw.itemToal  = res.data.data; 
+          vw.showPage  = true;
         })
       }
     },
