@@ -112,8 +112,11 @@ router.post('/autoLogin', (req, res) => {
       }
     })
   }else{
-    userSession.destroy();
+    jsonWrite(res, {msg: '用户未登录', code: '10001'});
   }
+  // else{
+  //   userSession.destroy();
+  // }
 });
 
 //获取用户基本信息

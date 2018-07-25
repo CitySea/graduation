@@ -7,6 +7,10 @@ const routerObj = new Router({
 	mode: 'hash',
 	routes: [
     {
+      path: '/',
+      redirect: 'home',
+    },
+    {
       //登录页
       path: '/login',
       name: 'login',
@@ -95,6 +99,12 @@ const routerObj = new Router({
       path: '/search',
       name: 'search',
       component: resolve => require(['@/modules/animation/search'], resolve),
+    },
+    //搜索结果页
+    {
+      path: '/test',
+      name: 'test',
+      component: resolve => require(['@/modules/animation/test'], resolve),
     }
   ]
 });

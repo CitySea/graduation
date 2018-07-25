@@ -57,15 +57,15 @@
       let vw = this;
 
       //是否是登录状态
-      vw.$http.post('/api/user/autoLogin', {}, {}).then(function(res){
-        if( res.data.code == '10000' ){
-          vw.userId  = res.data.data[0].id;
-          vw.imgUrl  = res.data.data[0].profile;
-          vw.isLogin = true;
-        }
-      }).catch(function(err){
-        console.log(err);
-      });
+      // vw.$http.post('/api/user/autoLogin', {}, {}).then(function(res){
+      //   if( res.data.code == '10000' ){
+      //     vw.userId  = res.data.data[0].id;
+      //     vw.imgUrl  = res.data.data[0].profile;
+      //     vw.isLogin = true;
+      //   }
+      // }).catch(function(err){
+      //   console.log(err);
+      // });
     },
     methods: {
       logout: function() {
